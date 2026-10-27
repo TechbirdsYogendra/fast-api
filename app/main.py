@@ -4,8 +4,8 @@ from app.core.responses import api_response
 from app.database import Base, engine, ensure_owner_columns
 from app.routers import auth, books, todos
 
-Base.metadata.create_all(bind=engine)
-ensure_owner_columns()
+#Base.metadata.create_all(bind=engine)
+#ensure_owner_columns()
 
 app = FastAPI(title="Taskboard")
 app.include_router(auth.router)

@@ -1,11 +1,15 @@
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import declarative_base, sessionmaker
+from app.core.config import settings
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./app.db"
+def postgres_url(url: str) -> str:
+    if url.startswith("postgres://"):
+        return "postgresql+psycopg://" + url.removeprefix("postgres://")
+    if url.startswith("postgresql://"):
+        return "postgresql+psycopg://" + url.removeprefix("postgresql://")
+    return url
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(postgres_url(settings.DATABASE_URL))
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 
