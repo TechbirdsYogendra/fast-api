@@ -8,8 +8,8 @@ from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory=Path(__file__).resolve().parent.parent / "templates")
 
-#Base.metadata.create_all(bind=engine)
-#ensure_owner_columns()
+Base.metadata.create_all(bind=engine)
+ensure_owner_columns()
 
 app = FastAPI(title="Taskboard")
 app.include_router(auth.router)
