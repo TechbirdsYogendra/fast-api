@@ -3,6 +3,10 @@ from fastapi.exceptions import RequestValidationError
 from app.core.responses import api_response
 from app.database import Base, engine, ensure_owner_columns
 from app.routers import auth, books, todos
+from pathlib import Path
+from fastapi.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory=Path(__file__).resolve().parent.parent / "templates")
 
 #Base.metadata.create_all(bind=engine)
 #ensure_owner_columns()
@@ -11,6 +15,14 @@ app = FastAPI(title="Taskboard")
 app.include_router(auth.router)
 app.include_router(books.router)
 app.include_router(todos.router)
+
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={"title": "Taskboard", "request": request},
+    )
 
 
 @app.exception_handler(RequestValidationError)
